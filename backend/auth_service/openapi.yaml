@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Auth Service API
+  version: "1.0.0"
+servers:
+  - url: http://localhost/api/auth
+paths:
+  /users/me:
+    get:
+      summary: Get the current authenticated user
+      description: Returns the user details for the provided JWT in the Authorization header.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successful retrieval of the current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          description: Invalid token
+  /login:
+    post:
+      summary: Login a user
+      description: Authenticates a user and returns a JWT token.
+      requestBody:
+        description: User login credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUserDTO"
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token
+        "401":
+          description: Incorrect username or password
+  /register:
+    post:
+      summary: Register a new user
+      description: Creates a new user account and returns the created user details.
+      requestBody:
+        description: User registration information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDTO"
+      responses:
+        "200":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "409":
+          description: User with the same name already exist
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        username:
+          type: string
+          example: "john_doe"
+      required:
+        - id
+        - username
+    LoginUserDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "john_doe"
+        password:
+          type: string
+          example: "securePassword123"
+      required:
+        - username
+        - password
+    CreateUserDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "john_doe"
+        password:
+          type: string
+          example: "securePassword123"
+      required:
+        - username
+        - password

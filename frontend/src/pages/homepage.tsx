@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 //////////////////////////
 
 export default function HomePage() {
-  const [items, setItems] = useState<Array<Item>>([
+  const [items, _setItems] = useState<Array<Item>>([
     { id: 1, name: "Кирпич", image: brick, price: 4, volume: "4 кг" },
     { id: 1, name: "Кирпич", image: brick, price: 4, volume: "4 кг" },
     { id: 1, name: "Кирпич", image: brick, price: 4, volume: "4 кг" },
