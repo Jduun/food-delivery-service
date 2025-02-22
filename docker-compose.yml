@@ -26,7 +26,47 @@ services:
     volumes:
       - ${AUTH_DB_PATH}:/var/lib/postgresql/data
     ports:
-      - "${AUTH_DB_PORT}:${AUTH_DB_PORT}"
+      - "${AUTH_DB_PORT}:5432"
+    networks:
+      - app-network
+
+  store_service:
+    build:
+      context: ./backend/store_service
+    container_name: store_service
+    restart: unless-stopped
+    volumes:
+      - ./backend/store_service/src:/app/src
+    ports:
+      - "${STORE_SERVICE_PORT}:${STORE_SERVICE_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - store_service_db
+    networks:
+      - app-network
+
+  store_service_db:
+    image: postgres:17
+    container_name: store-service-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${STORE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${STORE_DB_PASSWORD}
+      POSTGRES_DB: ${STORE_DB_NAME}
+    volumes:
+      - ${STORE_DB_PATH}:/var/lib/postgresql/data
+    ports:
+      - "${STORE_DB_PORT}:5432"
+    networks:
+      - app-network
+  
+  store_service_db_adminer:
+    image: adminer
+    restart: unless-stopped
+    container_name: store_service_db_adminer
+    ports:
+      - "${STORE_DB_ADMINER_PORT}:${STORE_DB_ADMINER_PORT}"
     networks:
       - app-network
 

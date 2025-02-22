@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Store Service API
+  version: "1.0.0"
+servers:
+  - url: http://localhost/api/store
+
+tags:
+  - name: Products
+  - name: Orders
+
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get products with filters
+      description: Return a list of products applying filters and pagination.
+      parameters:
+        - in: query
+          name: search_input
+          schema:
+            type: string
+          description: User input to search products by name, description, or category.
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+          description: Pagination offset.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: Maximum number of products to return.
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: Filter products by category.
+        - in: query
+          name: min_price
+          schema:
+            type: number
+            format: float
+          description: Minimum product price.
+        - in: query
+          name: max_price
+          schema:
+            type: number
+            format: float
+          description: Maximum product price.
+      responses:
+        "200":
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /products/categories:
+    get:
+      tags:
+        - Products
+      summary: Get all product categories
+      description: Retrieve a list of unique product categories.
+      responses:
+        "200":
+          description: A list of product categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        name:
+          type: string
+          example: "Apple"
+        count:
+          type: integer
+          example: 100
+        category:
+          type: string
+          example: "Fruits"
+        price:
+          type: number
+          format: float
+          example: 1.99
+        image:
+          type: string
+          nullable: true
+          example: "https://example.com/product.jpg"
+        description:
+          type: string
+          nullable: true
+          example: "Fresh and juicy apples"
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-01-01T12:00:00Z"
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Internal server error"
+      required:
+        - message
