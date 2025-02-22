@@ -1,11 +1,15 @@
-import { eq, desc, ilike, and, gte, lte, or } from "drizzle-orm";
+import { eq, desc, ilike, and, gte, lte, or, sql } from "drizzle-orm";
 import { db } from "../db/drizzle.connection";
 import { Product } from "../entities/product.entity";
-import { ProductReponse, GetProductParams } from "@app_types/product.dto";
+import {
+  ProductReponse,
+  GetProductParams,
+  GetProductsReponse,
+} from "@app_types/product.dto";
 
 export const getProducts = async (
   productParams: GetProductParams,
-): Promise<ProductReponse[]> => {
+): Promise<GetProductsReponse> => {
   try {
     const filters = [];
     if (productParams.category !== "") {
@@ -44,10 +48,20 @@ export const getProducts = async (
       .orderBy(desc(Product.created_at))
       .offset(productParams.offset)
       .limit(productParams.limit);
-    return products.map((product) => ({
-      ...product,
-      created_at: product.created_at.toISOString(),
-    }));
+
+    const countResult = await db
+      .select({ total: sql<number>`COUNT(*)` })
+      .from(Product)
+      .where(whereCondition);
+    const count = countResult[0]?.total || 0;
+
+    return {
+      products: products.map((product) => ({
+        ...product,
+        created_at: product.created_at.toISOString(),
+      })),
+      count: count,
+    };
   } catch (error: any) {
     throw new Error("Failed to fetch products: " + error.message);
   }

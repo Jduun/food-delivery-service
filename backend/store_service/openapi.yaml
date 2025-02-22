@@ -14,8 +14,8 @@ paths:
     get:
       tags:
         - Products
-      summary: Get products with filters
-      description: Return a list of products applying filters and pagination.
+      summary: Get products with filters and its total number
+      description: Return a list of products and its count applying filters and pagination.
       parameters:
         - in: query
           name: search_input
@@ -57,9 +57,15 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ProductResponse"
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductResponse"
+                  count:
+                    type: number
+                    description: Total number of products matching the filters.
         "500":
           description: Internal server error.
           content:
