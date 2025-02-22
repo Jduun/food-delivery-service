@@ -72,6 +72,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: User input isn't valid
         "409":
           description: User with the same name already exist
 components:

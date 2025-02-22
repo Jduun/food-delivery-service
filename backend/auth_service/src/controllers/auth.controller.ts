@@ -36,10 +36,35 @@ export const handleLoginUser = async (
 
 export const registerUser = async (req: Request, res: Response) => {
   const user: CreateUserDTO = req.body;
-  try {
-    const newUser = await createUser(user);
-    res.status(200).json(newUser);
-  } catch (error) {
-    res.status(409).send("User with the same name already exist");
+  const minPasswordLength = 8;
+  const maxPasswordLength = 100;
+  const minUsernameLength = 1;
+  const maxUsernameLength = 40;
+  if (
+    user.password.length < minPasswordLength ||
+    user.password.length > maxPasswordLength
+  ) {
+    res
+      .status(400)
+      .send(
+        `Password length must be no less than ${minPasswordLength} and no more than ${maxPasswordLength} characters long`,
+      );
+  }
+  if (
+    user.username.length < minUsernameLength ||
+    user.username.length > maxUsernameLength
+  ) {
+    res
+      .status(400)
+      .send(
+        `Username length must be no less than ${minUsernameLength} and no more than ${maxUsernameLength} characters long`,
+      );
+  } else {
+    try {
+      const newUser = await createUser(user);
+      res.status(200).json(newUser);
+    } catch (error) {
+      res.status(409).send("User with the same name already exist");
+    }
   }
 };
