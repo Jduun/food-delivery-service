@@ -16,7 +16,7 @@ interface Config {
 const config: Config = {
   AUTH_SERVICE_PORT: Number(process.env.AUTH_SERVICE_PORT),
   AUTH_DB_HOST: process.env.AUTH_DB_HOST!,
-  AUTH_DB_PORT: Number(process.env.AUTH_DB_PORT)!,
+  AUTH_DB_PORT: 5432,
   AUTH_DB_USERNAME: process.env.AUTH_DB_USERNAME!,
   AUTH_DB_PASSWORD: process.env.AUTH_DB_PASSWORD!,
   AUTH_DB_NAME: process.env.AUTH_DB_NAME!,

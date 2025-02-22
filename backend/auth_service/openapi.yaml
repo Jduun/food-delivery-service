@@ -4,9 +4,15 @@ info:
   version: "1.0.0"
 servers:
   - url: http://localhost/api/auth
+
+tags:
+  - name: Auth
+
 paths:
   /users/me:
     get:
+      tags:
+        - Auth
       summary: Get the current authenticated user
       description: Returns the user details for the provided JWT in the Authorization header.
       security:
@@ -22,6 +28,8 @@ paths:
           description: Invalid token
   /login:
     post:
+      tags:
+        - Auth
       summary: Login a user
       description: Authenticates a user and returns a JWT token.
       requestBody:
@@ -46,6 +54,8 @@ paths:
           description: Incorrect username or password
   /register:
     post:
+      tags:
+        - Auth
       summary: Register a new user
       description: Creates a new user account and returns the created user details.
       requestBody:

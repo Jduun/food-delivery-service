@@ -70,7 +70,7 @@ export const createUser = async (
       username: newUser.username,
     };
     return createdUser;
-  } catch (error) {
+  } catch (error: any) {
     logger.error(error);
     throw new Error("Error creating user");
   }
