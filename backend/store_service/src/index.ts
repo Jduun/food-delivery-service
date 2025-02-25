@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import productRoutes from "./routes/product.routes";
-//import orderRoutes from "./routes/order.routes";
+import orderRoutes from "./routes/order.routes";
 import logger from "./logger";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
@@ -8,9 +8,10 @@ import config from "./config";
 import cors from "cors";
 
 const app: Application = express();
-const PORT = config.STORE_SERVICE_PORT;
 app.use(express.json());
-const allowedOrigins = ["http://localhost:5173", "http://localhost"];
+const PORT = config.STORE_SERVICE_PORT;
+
+const allowedOrigins = ["http://localhost:5173", "http://localhost", `http://localhost:${PORT}`];
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -26,12 +27,14 @@ app.use(
   }),
 );
 
-app.use("/store", productRoutes);
-//app.use("/store/orders", orderRoutes);
+const servicePrefix = "/store";
+app.use(`${servicePrefix}/products`, productRoutes);
+app.use(`${servicePrefix}/orders`, orderRoutes);
+
 const swaggerDocument = YAML.load("openapi.yaml");
 app.use("/store/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(PORT, () => {
   logger.info(`Server running on http://localhost:${PORT}`);
-  logger.info(`Swagger UI available at http://localhost:${PORT}/auth/docs`);
+  logger.info(`Swagger UI available at http://localhost:${PORT}/store/docs`);
 });

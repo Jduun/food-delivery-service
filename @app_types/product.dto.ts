@@ -1,10 +1,10 @@
 export interface GetProductParams {
-  search_input: string;
+  searchInput: string;
   offset: number;
   limit: number;
   category: string;
-  min_price: number;
-  max_price: number | undefined;
+  minPrice: number;
+  maxPrice: number | undefined;
 }
 
 export interface ProductReponse {
@@ -15,10 +15,20 @@ export interface ProductReponse {
   price: number;
   image: string | null;
   description: string | null;
-  created_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface GetProductsReponse {
   products: ProductReponse[];
   count: number;
+}
+
+export interface UpdateProductDTO {
+  name?: string;
+  count?: number;
+  category?: string;
+  price?: number;
+  image?: string;
+  description?: string;
 }
