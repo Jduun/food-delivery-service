@@ -47,7 +47,8 @@ export const getCurrentUser = async (token: string): Promise<UserResponse> => {
     }
     return user;
   } catch (error: any) {
-    throw new Error("Invalid token: " + error.message);
+    logger.error(`Invalid token: ${error.message}`);
+    throw new Error(`Invalid token: ${error.message}`);
   }
 };
 
@@ -60,18 +61,15 @@ export const createUser = async (
       username: userData.username,
       password: userData.password,
     };
-    const [insertedUser] = await db
-      .insert(User)
-      .values(newUser)
-      .returning({ id: User.id });
+    const [insertedUser] = await db.insert(User).values(newUser).returning();
     logger.info(`User ${newUser.username} successfully registered`);
     const createdUser: UserResponse = {
       id: insertedUser.id,
-      username: newUser.username,
+      username: insertedUser.username,
     };
     return createdUser;
   } catch (error: any) {
-    logger.error(error);
-    throw new Error("Error creating user");
+    logger.error(`Error creating user: ${error.message}`);
+    throw new Error(`Error creating user: ${error.message}`);
   }
 };

@@ -7,9 +7,10 @@ import config from "./config";
 import cors from "cors";
 
 const app: Application = express();
-const PORT = config.AUTH_SERVICE_PORT;
 app.use(express.json());
-const allowedOrigins = ["http://localhost:5173", "http://localhost"];
+const PORT = config.AUTH_SERVICE_PORT;
+
+const allowedOrigins = ["http://localhost:5173", "http://localhost", `http://localhost:${PORT}`];
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -25,9 +26,14 @@ app.use(
   }),
 );
 
-app.use("/auth", authRoutes);
+const servicePrefix = "/auth";
+app.use(`${servicePrefix}`, authRoutes);
 const swaggerDocument = YAML.load("openapi.yaml");
-app.use("/auth/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  `${servicePrefix}/docs`,
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument),
+);
 
 app.listen(PORT, () => {
   logger.info(`Server running on http://localhost:${PORT}`);

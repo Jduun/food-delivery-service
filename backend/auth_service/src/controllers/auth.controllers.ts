@@ -6,7 +6,7 @@ import {
 } from "../services/auth.service";
 import { CreateUserDTO, LoginUserDTO } from "@app_types/user.dto";
 
-export const getCurrentUserHandler = async (req: Request, res: Response) => {
+export const getCurrentUserController = async (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).send("Missing or invalid token");
@@ -21,7 +21,7 @@ export const getCurrentUserHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const handleLoginUser = async (
+export const loginUserController = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
