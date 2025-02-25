@@ -1,4 +1,4 @@
-import { pgTable, uuid, numeric, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, real, text, timestamp } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const Order = pgTable("order", {
@@ -6,8 +6,13 @@ export const Order = pgTable("order", {
     .primaryKey()
     .default(sql`gen_random_uuid()`),
   userId: uuid("user_id").notNull(),
-  totalPrice: numeric("total_price", { precision: 10, scale: 2 }).notNull(),
+  totalPrice: real("total_price").notNull().default(0),
   address: text("address").notNull(),
   status: text("status").notNull().default("cart"),
-  date: timestamp("date", { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });

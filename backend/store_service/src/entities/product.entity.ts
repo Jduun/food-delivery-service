@@ -18,5 +18,10 @@ export const Product = pgTable("product", {
   price: real("price").notNull().default(0),
   image: text("image"),
   description: text("description"),
-  created_at: timestamp("date", { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });

@@ -1,5 +1,5 @@
 {
-  "id": "49940e9b-3f85-437e-b7c3-78f4a84e3f48",
+  "id": "f6bfe477-5c46-4f6b-9afc-3a73d96ee443",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -23,9 +23,10 @@
         },
         "total_price": {
           "name": "total_price",
-          "type": "numeric(10, 2)",
+          "type": "real",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": 0
         },
         "address": {
           "name": "address",
@@ -40,8 +41,15 @@
           "notNull": true,
           "default": "'cart'"
         },
-        "date": {
-          "name": "date",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -81,9 +89,10 @@
         },
         "price": {
           "name": "price",
-          "type": "numeric(10, 2)",
+          "type": "real",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {},
@@ -169,6 +178,20 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
