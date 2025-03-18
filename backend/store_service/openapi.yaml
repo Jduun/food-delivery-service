@@ -18,7 +18,7 @@ paths:
       description: Return a list of products and its count applying filters and pagination.
       parameters:
         - in: query
-          name: search_input
+          name: searchInput
           schema:
             type: string
           description: User input to search products by name, description, or category.
@@ -40,13 +40,13 @@ paths:
             type: string
           description: Filter products by category.
         - in: query
-          name: min_price
+          name: minPrice
           schema:
             type: number
             format: float
           description: Minimum product price.
         - in: query
-          name: max_price
+          name: maxPrice
           schema:
             type: number
             format: float
