@@ -1,5 +1,5 @@
 // import * as React from "react";
-import { Heart, House, Search, ShoppingCart, UserRound } from "lucide-react";
+import { House, Package, ShoppingCart, UserRound } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export default function BottomBar() {
@@ -16,28 +16,22 @@ export default function BottomBar() {
                 navigate("/");
               }}
             />
-            <Search
-              className="cursor-pointer"
-              onClick={() => {
-                navigate("/");
-              }}
-            />
             <ShoppingCart
               className="cursor-pointer"
               onClick={() => {
-                navigate("/");
+                navigate("/cart");
               }}
             />
-            <Heart
+            <Package
               className="cursor-pointer"
               onClick={() => {
-                navigate("/");
+                navigate("/orders");
               }}
             />
             <UserRound
               className="cursor-pointer"
               onClick={() => {
-                navigate("/");
+                navigate("/profile");
               }}
             />
           </div>

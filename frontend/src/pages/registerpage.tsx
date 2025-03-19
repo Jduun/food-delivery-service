@@ -18,7 +18,8 @@ import {
 
 import { Link, useNavigate } from "react-router";
 import { Label } from "@/components/ui/label";
-import { registerRoute } from "@/api/userRouter";
+import { useUserRoutes } from "@/api/userRoutes";
+// import { registerRoute } from "@/api/userRoutes";
 
 const formSchema = z
   .object({
@@ -38,6 +39,7 @@ const formSchema = z
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const { registerRoute } = useUserRoutes(navigate);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

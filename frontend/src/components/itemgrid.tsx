@@ -1,11 +1,16 @@
-import { IItemGridProps } from "@/types/item.interface";
+import { ProductReponse } from "@/@app_types/product.dto";
 import ItemCard from "@/components/itemcard";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function ItemGrid({ cards }: IItemGridProps) {
+interface IItemGridProps {
+  cards: Array<ProductReponse>;
+  loading?: boolean;
+}
+
+export default function ItemGrid({ cards, loading }: IItemGridProps) {
   return (
     <>
-      {cards.length === 1 && cards[0].id === -1 ? (
+      {loading ? (
         <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {[...Array(12)]
             .map((_, i) => {

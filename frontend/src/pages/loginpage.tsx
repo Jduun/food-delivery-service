@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { string } from "zod";
 import { z } from "@/lib/ru-zod";
 import {
   Form,
@@ -16,14 +15,17 @@ import {
 } from "@/components/ui/form";
 import { Link, useNavigate } from "react-router";
 import { Label } from "@/components/ui/label";
-import { loginRoute, save_token } from "@/api/userRouter";
+import { useUserRoutes } from "@/api/userRoutes";
 
 const formSchema = z.object({
   login: z.string().min(5),
-  password: string().min(8),
+  password: z.string().min(8),
 });
+
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { loginRoute, saveToken } = useUserRoutes(navigate);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,12 +39,13 @@ export default function LoginPage() {
       form.setError("password", {
         message: "Неверный логин или пароль",
       });
-    }).then((o) => {
-      if (o) {
-        save_token(o.data.token);
-        navigate("/profile");
-      }
-    });
+    })
+      .then((rs) => {
+        if (rs) {
+          saveToken(rs.data.token);
+        }
+      })
+      .catch();
   }
 
   return (
