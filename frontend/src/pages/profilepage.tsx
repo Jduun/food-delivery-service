@@ -64,21 +64,11 @@ export default function ProfilePage() {
             setItems(products as Array<Array<ProductReponse>>);
           }
           setOrders(rs);
-
-          // console.log(
-          //   products.reduce((a, i) => {
-          //     return a + (i?.length ?? 0);
-          //   }, 0),
-          // );
-          // console.log(
-          //   orders.reduce((a, i) => {
-          //     return a + i.totalPrice;
-          //   }, 0),
-          // );
         });
       }
     });
-  }, [getConfirmedOrders, getItemById, getItemsIdInOrder, getUserInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <PageTemplate>

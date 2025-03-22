@@ -59,7 +59,7 @@ export default function OrderPage() {
         });
       }
     });
-  }, [getConfirmedOrders, getItemById, getItemsIdInOrder]);
+  }, []);
 
   return (
     <PageTemplate>
