@@ -23,8 +23,8 @@ fi
 
 docker compose down --remove-orphans
 docker compose up -d --build
-docker compose stop
-docker compose up -d
+# docker compose stop
+# docker compose up -d
 docker exec auth_service sh -c "cd /app/src/db && npx drizzle-kit generate && npx drizzle-kit migrate"
 docker exec store_service sh -c "cd /app/src/db && npx drizzle-kit generate && npx drizzle-kit migrate"
 docker compose logs -f
