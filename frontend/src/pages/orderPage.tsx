@@ -12,6 +12,7 @@ import { Label } from "@radix-ui/react-label";
 import ItemCard from "@/components/itemcard";
 import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/lib/text-format";
+import { observer } from "mobx-react-lite"
 
 export default function OrderPage() {
   const navigate = useNavigate();

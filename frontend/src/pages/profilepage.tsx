@@ -10,28 +10,25 @@ import { OrderResponse } from "@/@app_types/order.dto";
 import { Label } from "@radix-ui/react-label";
 import { formatDate } from "@/lib/text-format";
 import ItemCard from "@/components/itemcard";
-
 import { CreditCard, ShoppingCart } from "lucide-react";
+import { observer } from "mobx-react-lite"
+import authStore from "@/store/authStore";
 
-// import { UserResponse } from "@/@app_types/user.dto";
-
-export default function ProfilePage() {
+const ProfilePage = observer(() => {
   const navigate = useNavigate();
   const { getItemById } = useItemRoutes();
   const { getConfirmedOrders, getItemsIdInOrder } = useCartRoutes(navigate);
-  const { getUserInfo, clearToken } = useUserRoutes(navigate);
+  const { clearToken } = useUserRoutes(navigate);
   const [orders, setOrders] = useState<Array<OrderResponse>>([]);
   const [items, setItems] = useState<
     Array<Array<ProductReponse & { count?: number; totalPrice?: number }>>
   >([]);
-  const [username, setUsername] = useState("");
 
   useEffect(() => {
-    getUserInfo().then((rs) => {
-      if (rs) {
-        setUsername(rs.data.username);
-      }
-    });
+    console.log("I'm")
+    if (!authStore.user.username) {
+      authStore.getUserInfo()
+    }
 
     getConfirmedOrders().then((rs) => {
       if (rs) {
@@ -74,7 +71,7 @@ export default function ProfilePage() {
     <PageTemplate>
       <div className="space-y-6 p-6">
         <div className="flex flex-row justify-between">
-          <div className="text-lg font-medium">Вас зовут {username}</div>
+          <div className="text-lg font-medium">Вас зовут {authStore.user.username}</div>
           <Button onClick={clearToken} className="text-primary-foreground">
             Я хочу выйти
           </Button>
@@ -135,4 +132,6 @@ export default function ProfilePage() {
       </div>
     </PageTemplate>
   );
-}
+})
+
+export default ProfilePage;
