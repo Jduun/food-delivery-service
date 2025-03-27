@@ -17,6 +17,9 @@ export const loginUser = async (
     .select()
     .from(User)
     .where(eq(User.username, userData.username));
+  if (users.length === 0) {
+    throw new Error("User not found");
+  }
   const user = users[0];
   if (!user) {
     throw new Error("User not found");
