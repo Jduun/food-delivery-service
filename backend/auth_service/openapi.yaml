@@ -1,10 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Auth Service API
-  version: "1.0.0"
-servers:
-  - url: http://localhost/api/auth
-
+  title: Auth API
+  version: 1.0.0
 tags:
   - name: Auth
 
@@ -26,14 +23,14 @@ paths:
                 $ref: "#/components/schemas/UserResponse"
         "401":
           description: Invalid token
+
   /login:
     post:
       tags:
         - Auth
       summary: Login a user
-      description: Authenticates a user and returns a JWT token.
+      description: Authenticates a user and returns an access token and sets a refresh token in a cookie.
       requestBody:
-        description: User login credentials
         required: true
         content:
           application/json:
@@ -49,17 +46,17 @@ paths:
                 properties:
                   token:
                     type: string
-                    description: JWT token
+                    description: Access token
         "401":
           description: Incorrect username or password
+
   /register:
     post:
       tags:
         - Auth
       summary: Register a new user
-      description: Creates a new user account and returns the created user details.
+      description: Creates a new user account.
       requestBody:
-        description: User registration information
         required: true
         content:
           application/json:
@@ -67,56 +64,86 @@ paths:
               $ref: "#/components/schemas/CreateUserDTO"
       responses:
         "200":
-          description: User registered successfully
+          description: User successfully registered
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserResponse"
-        "400":
-          description: User input isn't valid
         "409":
-          description: User with the same name already exist
+          description: User with the same name already exists
+
+  /refresh:
+    post:
+      tags:
+        - Auth
+      summary: Refresh access token
+      description: Generates a new access token using the refresh token stored in cookies.
+      responses:
+        "200":
+          description: New access token generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: New access token
+        "401":
+          description: Invalid or missing refresh token
+
+  /logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout a user
+      description: Logs out the user by blacklisting the refresh token and clearing the cookie.
+      responses:
+        "200":
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out successfully
+
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   schemas:
-    UserResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-        username:
-          type: string
-          example: "john_doe"
-      required:
-        - id
-        - username
     LoginUserDTO:
       type: object
       properties:
         username:
           type: string
-          example: "john_doe"
         password:
           type: string
-          example: "securePassword123"
       required:
         - username
         - password
+
     CreateUserDTO:
       type: object
       properties:
         username:
           type: string
-          example: "john_doe"
         password:
           type: string
-          example: "securePassword123"
       required:
         - username
         - password
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
