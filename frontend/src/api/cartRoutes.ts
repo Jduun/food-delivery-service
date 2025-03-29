@@ -160,6 +160,7 @@ export function useCartRoutes(navigate: NavigateFunction) {
               }
             }
           });
+          
       }
     });
   }

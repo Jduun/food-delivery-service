@@ -25,7 +25,6 @@ const ProfilePage = observer(() => {
   >([]);
 
   useEffect(() => {
-    console.log("I'm")
     if (!authStore.user.username) {
       authStore.getUserInfo()
     }

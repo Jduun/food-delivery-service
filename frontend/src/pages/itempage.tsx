@@ -92,9 +92,10 @@ export default function ItemPage() {
                 {productCount.amount === 0 ? (
                   <Button
                     onClick={() => {
-                      addItemToCart(productId || "").then(() => {
-                        setProductCount({ ...productCount, changed: true });
-                      });
+                      addItemToCart(productId || "")
+                        .then(() => {
+                          setProductCount({ ...productCount, changed: true });
+                        })
                     }}
                     className="w-full p-7 text-lg md:w-fit"
                   >
